@@ -1,0 +1,23 @@
+{
+  "name": "snakerino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TMaszko/snakerino.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TMaszko/snakerino/issues"
+  },
+  "homepage": "https://github.com/TMaszko/snakerino#readme",
+  "devDependencies": {
+    "browser-sync": "^2.24.6"
+  }
+}
