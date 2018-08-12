@@ -1,10 +1,10 @@
-import Drawable from './Drawable'
 
-
-export default class Food extends Drawable {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y
+class Food extends Drawable {
+    constructor(size) {
+        super();
+        this.size = size
+        this.x = null;
+        this.y = null
     }
 
     setX(newX) {
@@ -17,6 +17,6 @@ export default class Food extends Drawable {
 
     draw() {
         this.ctx.fillStyle = "green"
-        this.ctx.fillRect(this.x, this.y, snakeSize, snakeSize)
+        this.ctx.fillRect(this.x, this.y, this.size, this.size)
     }
 }
