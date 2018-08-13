@@ -28,13 +28,7 @@ class Game extends Drawable {
     }
 
     getInitSnakePosition() {
-        const initPosition = [
-            {
-                x: Math.floor((this.canvas.width - this.tileSize) / 2 / this.tileSize) * this.tileSize,
-                y: Math.floor((this.canvas.height - this.tileSize) / 2 / this.tileSize) * this.tileSize
-            }
-        ]
-
+        const initPosition = [this.getRandomLocationInGame()]
         return initPosition 
     }
 
@@ -43,11 +37,15 @@ class Game extends Drawable {
         this.prepareGame()
     }
 
+    isValidKeyPair(currentKeyCode, keyCode) {
+        return Math.abs(currentKeyCode - keyCode) !== 2
+    }
+
     setNewKeyStateIfValidMove(event) {
         const keyCode = parseInt(event.which, 10)
-        const currentSnakeDirectionKeyCode = this.state.snake.getDirection().keyCode
-        const isValidMove = Math.abs(currentSnakeDirectionKeyCode - keyCode) !== 2
-        if(keyCode !== parseInt(currentSnakeDirectionKeyCode) && isValidMove) {
+        const currentSnakeDirectionKeyCode = parseInt(this.state.snake.getDirection().keyCode, 10)
+        const isValidMove = this.isValidKeyPair(currentSnakeDirectionKeyCode, keyCode) 
+        if (keyCode !== currentSnakeDirectionKeyCode && isValidMove) {
             this.state.keysState[keyCode].active = true,
             this.state.keysState[currentSnakeDirectionKeyCode].active = false
         }
@@ -96,12 +94,18 @@ class Game extends Drawable {
         }
         return false;
     }
+
+    drawGameOverScreen() {
+        this.ctx.fillStyle = "green";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.fillStyle = "#fff"
+        this.ctx.fillText('GAME OVER', 100, 100);
+    }
+
+
     render() {
         if(!this.state.isRunning) {
-            this.ctx.fillStyle = "green";
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-            this.ctx.fillStyle = "#fff"
-            this.ctx.fillText('GAME OVER', 100, 100);
+            this.drawGameOverScreen()
         } else {
             this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
             const {snake, food } = this.state
@@ -111,9 +115,22 @@ class Game extends Drawable {
         }
         
     }
+
+    getRandomNumberInMaxRange(maxRange) {
+        return Math.floor((Math.random() * maxRange) / this.tileSize) * this.tileSize
+    }
+
+    getRandomLocationInGame() {
+        const x = this.getRandomNumberInMaxRange(this.canvas.width)
+        const y = this.getRandomNumberInMaxRange(this.canvas.height)
+        return {
+            x,
+            y
+        }
+    }
+
     setNewRandomFoodLocation() {
-        const newFoodX = Math.floor((Math.random() * this.canvas.width) / this.tileSize) * this.tileSize
-        const newFoodY = Math.floor((Math.random() * this.canvas.height) / this.tileSize) * this.tileSize 
+        const {x : newFoodX, y: newFoodY} = this.getRandomLocationInGame()
         this.state.food.setX(newFoodX)
         this.state.food.setY(newFoodY)
     }
